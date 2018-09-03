@@ -1,0 +1,75 @@
+~~~~~~~~~ Firts Steps ~~~~~~~~~
+
+1. entramos al entorno virtual. (sino lo creamos con virtualenv y entramos)
+2. Activamos el entorno con (entramos a la carpeta del entorno desde consola y ponemos: source ./bin/activate).
+3. Instalamos pip (https://pip.readthedocs.io/en/stable/installing/) seguir las instrucciones del _user.
+4. Con pip instalamos el django (https://www.djangoproject.com/download/) recomendable la LTS.
+4.1 Si queremos ver q nomas tenemos instalado en nuestro entornovirtual ponemos (pip freeze o python -m django --version)
+5. creamos un Django Project (django-admin startproject prueba1).
+6. Corremos el proyecto para verificar q todo esta bien (entramos al proyecto desde consola y digitamos: python manage.py runserver)
+7. Todo bien!
+
+~~~~~~~~~ Migrations ~~~~~~~~~
+
+Las migraciones es como comunicamos nuestro proyecto con nuestra base de datos y otros modelos.
+1. Debemos tener el proyecto sin ejecutar y digitar en conosola ya ubicados en el proyecto (python manage.py migrate).
+2. Todo bien!
+
+~~~~~~~~~ Super User + Django Management ~~~~~~~~~
+
+Django crea nuestro proyecto con una interfaz establecida (http://localhost:8000/admin/login/?next=/admin/)
+Ahora crearemos un superusuario para nuestro proyecto
+1. En consola dentro digitamos (python manage.py createsuperuser) esto nos ira pidiendo el user, e-mail y el pass
+2. Volvemos correr servidor e intentamos loguearnos con nuestro user y pass y entraremos sin ningun problema! (interfaz de superuser).
+2.1 Para cambiar el idioma (en por defecto) entramos a nuestra carpeta y buscamos settings.py y ahi bajamos y cambiamos donde este (LANGUAGE_CODE = 'en-us' -> LANGUAGE_CODE = 'es')
+Recomendacion: inspeccionar las opciones q nos da la interfaz del proyecto como el CRUD de usuarios.
+
+~~~~~~~~~ Eso es todo lo que hago en este proyecto de aqui creo la aplicacion boletin ~~~~~~~~~
+
+Recomendacion: abrir el proyecto en un editor de codigo (VSCode, atom, etc).
+Diferencia entre app web y sitio web
+Sitio web : puede ser escrito solo en html
+App Web: es para interactuar con el user... con backend y frontend.
+
+~~~~~~~~~Crear Aplicacion dentro de nuestro Proyecto ~~~~~~~~~
+
+CREO APP: dentro del proyecto creo una aplicacion con: (python manage.py startapp boletin)
+#Abrimos boletin en el editor se puede observar que tiene archivos .py pero el q mas destaca es __init__.py
+# __init__.py : si un directorio tiene "init" significa que ese directorio va a ser reconocido como un modulo de python
+
+Admin, modes y views sera donde mas se trabajara.
+ahora se debe registrar la aplicacion creada.
+
+~~~~~~~~~ Registrar Aplicacion dentro del proyecto ~~~~~~~~~
+
+Se la registra en el settings.py del proyecto, asiq lo abrimos con el editor.
+dentro del archivo buscamos "Installed Apss" y la anadimos al final "recordar la coma al final"
+
+~~~~~~~~~ Creando un Modelo ~~~~~~~~~ 
+
+Documentacion models Django: (https://docs.djangoproject.com/en/1.11/topics/db/models/)
+Con los migrations comunicamos nuestro proyecto con la base de datos
+Con los modelos creaos tablas en nuestra base de datos para guardar obejtos y todos sus atributos
+# Entramos a nuestra aplicacion y buscamos models.py
+# Dentro creamos nuestro primer modelo para la base de datos
+# Siempre q modifiquemos el modelo debemos hacer el migrations
+(VER EL MODELS.PY)
+Ahora haremos el migrations, son 2 pasos: (cerraoms el servidor)
+1. python manage.py makemigrations (busca todos los cambios realizados y los empaqueta para la migracion)
+2. python manage.py migrate (comunica esas modificaciones a la bdd)
+
+~~~~~~~~~ Crear Objetos en el modelo ~~~~~~~~~
+
+Crearemos objetos para guardarlos en nuestra BDD.
+Una manera de hacerlo es mediante el shell de python.
+Nos ubicamos dentro de nuestro proyecto y en consola digitamos: (python manage.py shell)
+y hacemos una importacion de nuestro modelo: (from boletin.models import Registrado)
+ahora estamos dentro del shell con el modelo importado y podemos crear variables como:
+gente = Registrado.objects.all() "Eso nos va a dar un set de objetos... ahora si escribimos seguido gente 'que es la variable creada' nos dara los elementos q esten dentro de esa variable q por el momento es cero"
+Ahora vamos a guardar una persona:
+persona1 = Registrado.objects.create(nombre='Cesar", email='cesar@gmail.com')
+
+#Hasta ahi estaria registrado... ahora iremos al archivo admin de nuestr proyecto
+
+primero importamos nuestro modelo (como esta dentro de la misma aplicacion lo hacemos asi sino cambiaria el directorio): 
+from .models import Registrado
